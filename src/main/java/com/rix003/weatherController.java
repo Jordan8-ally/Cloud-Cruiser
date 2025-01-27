@@ -1,4 +1,4 @@
-package com.rix003;
+package cloud_cruiser.src.main.java.com.rix003;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -13,6 +13,14 @@ public class weatherController {
 
     public TextField cityField;
     public Label weatherLabel;
+    private final String apiKey;
+    private final String apiUrl;
+
+    public weatherController() {
+        configLoader config = new configLoader();
+        this.apiKey = System.getenv("Weather_API_Key") != null ? System.getenv("Weather_API_Key") : System.getProperty("weather.api.key");
+        this.apiUrl = System.getenv("Weather_API_Url") != null ? System.getenv("Weather_API_Url") : System.getProperty("weather.api.url");
+    }
 
     public void fetchWeather() {
         String cityName = cityField.getText();
@@ -21,9 +29,9 @@ public class weatherController {
             weatherLabel.setText("Please enter a city name!");
         }
 
-        String apiKey = "YOUR_API_KEY";
+        String requestUrl = String.format("%s?q=%s&appid=%s", apiUrl, cityName, apiKey);
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey)).GET().build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl)).GET().build();
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -35,11 +43,11 @@ public class weatherController {
 
             }
             else {
-                weatherLabel.setText("Error: Unable to fetch weather data.");
+                weatherLabel.setText("Error: HTTP" + get.statusCode());
             }
         }
         catch (Exception e) {
-            weatherLabel.setText("Error: " + e.getMessage());
+            weatherLabel.setText("Error fetching the weather data: " + e.getMessage());
         }
     }
 }

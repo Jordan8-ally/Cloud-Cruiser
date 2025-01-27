@@ -1,4 +1,4 @@
-package com.rix003;
+package cloud_cruiser.src.main.java.com.rix003;
 
 import javafx.application.Application;
 import javafx.scene.Parent;
