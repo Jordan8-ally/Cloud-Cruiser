@@ -1,0 +1,19 @@
+# Ignore build output directories
+/target/
+/out/
+
+# Ignore Maven wrapper files
+.mvn/
+
+# Ignore IDE project files
+.idea/
+*.iml
+*.swp
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore dependencies directory if you're not using a dependency manager
+/lib/
+src/main/resources/application.properties
